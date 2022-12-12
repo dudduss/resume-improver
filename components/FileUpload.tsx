@@ -12,19 +12,31 @@ import {
   useMultiStyleConfig,
 } from "@chakra-ui/react";
 
+import { Position } from "../public/schemas";
+
 const FileUpload: React.FC = () => {
   const [file, setFile] = React.useState<File | null>(null);
+  const [positions, setPositions] = React.useState<Position[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFile(event.target.files![0]);
   };
 
   const handleSubmit = async () => {
-    const response = await fetch("http://localhost:3000/api/resume", {
-      method: "GET",
-    });
-    const positionsJson = await response.json();
-    console.log(positionsJson);
+    const reader = new FileReader();
+    reader.readAsDataURL(file!);
+    reader.onload = async () => {
+      const resumeStr = reader.result!.toString().split(",")[1];
+      const response = await fetch("http://localhost:3000/api/highlights/", {
+        method: "POST",
+        body: JSON.stringify({ resume: resumeStr }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const positionsJson = (await response.json()) as Position[];
+      setPositions(positionsJson);
+    };
   };
 
   const styles = useMultiStyleConfig("Button", { variant: "outline" });
