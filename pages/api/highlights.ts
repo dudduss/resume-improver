@@ -1,9 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { Position } from "../../public/schemas";
-type Data = {
-  name: string;
-};
 
 type ResumeHighlightsRequest = {
   resume: string;
@@ -26,9 +23,7 @@ export default async function handler(
 }
 
 function removeBullets(highlight: string): string {
-  const alphaNumericChars =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const firstChar = highlight.indexOf(alphaNumericChars);
+  const firstChar = highlight.search(/\w/);
   return highlight.substring(firstChar);
 }
 
@@ -94,11 +89,10 @@ async function getResumeHighlights(
   const headers = {
     accept: "application/json",
     "content-type": "application/json",
-    "sovren-accountid": "37306374",
-    "sovren-servicekey": "8qWxcGqr0OdDUisjCDNWxWdKrftMQR/fyovdtvwn",
+    "sovren-accountid": process.env.SOVREN_ACCOUNT_ID!,
+    "sovren-servicekey": process.env.SOVREN_SERVICE_KEY!,
   };
 
-  // send a post request to the url above
   const response = await fetch(url, {
     method: "POST",
     headers: headers,

@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import { Position } from "../public/schemas";
+import JobPosition from "./JobPosition";
 
 const FileUpload: React.FC = () => {
   const [file, setFile] = React.useState<File | null>(null);
@@ -43,7 +44,7 @@ const FileUpload: React.FC = () => {
 
   return (
     <Stack spacing={10} margin={10} alignItems={"center"}>
-      <Box alignItems={"center"} width={"50%"}>
+      <Box width={"50%"}>
         <form onSubmit={handleSubmit}>
           <InputGroup size="lg">
             <Input
@@ -75,6 +76,14 @@ const FileUpload: React.FC = () => {
         >
           Upload
         </Button>
+      </Box>
+      <Box>
+        {positions.map((position) => (
+          <JobPosition
+            key={position.title + position.employerName}
+            position={position}
+          />
+        ))}
       </Box>
     </Stack>
   );
