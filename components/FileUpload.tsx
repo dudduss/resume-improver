@@ -28,13 +28,16 @@ const FileUpload: React.FC = () => {
     reader.readAsDataURL(file!);
     reader.onload = async () => {
       const resumeStr = reader.result!.toString().split(",")[1];
-      const response = await fetch("http://localhost:3000/api/highlights/", {
-        method: "POST",
-        body: JSON.stringify({ resume: resumeStr }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL!}/api/highlights/`,
+        {
+          method: "POST",
+          body: JSON.stringify({ resume: resumeStr }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const positionsJson = (await response.json()) as Position[];
       setPositions(positionsJson);
     };

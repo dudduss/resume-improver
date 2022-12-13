@@ -24,16 +24,16 @@ const JobPosition: React.FC<JobPositionProps> = ({ position }) => {
 
     try {
       const choices = position.highlights.map(async (highlight) => {
-        const url = `http://localhost:3000/api/improvements`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL!}/api/improvements`;
         const response = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ highlight: highlight }),
         });
         const improvementsJson = await response.json();
-        return improvementsJson
+        return improvementsJson;
       });
-  
+
       Promise.all(choices).then((values) => {
         setChoices(values);
         setIsGettingImprovements(false);
@@ -42,8 +42,6 @@ const JobPosition: React.FC<JobPositionProps> = ({ position }) => {
       setIsGettingImprovements(false);
       console.log(error);
     }
-
-
   };
 
   return (
@@ -69,7 +67,7 @@ const JobPosition: React.FC<JobPositionProps> = ({ position }) => {
           onClick={handleSubmit}
           colorScheme="whatsapp"
           style={{ marginLeft: 20 }}
-            isLoading={isGettingImprovements}
+          isLoading={isGettingImprovements}
           loadingText="Generating"
           spinnerPlacement="end"
         >
