@@ -115,14 +115,18 @@ async function getResumeHighlights(
 
     const description = position.Description;
     var employerName = "";
-    if (position.Employer) {
+    if (position.Employer && position.Employer.Name) {
       employerName = position.Employer.Name.Normalized;
     } else {
       employerName = "Unknown Employer";
     }
 
-    const startDate = getStartDate(position.StartDate.Date);
-    const endDate = getEndDate(isCurrent, position.EndDate.Date);
+    const startDate = position.StartDate
+      ? getStartDate(position.StartDate.Date)
+      : "Unknown Start Date";
+    const endDate = position.EndDate
+      ? getEndDate(isCurrent, position.EndDate.Date)
+      : "Unknown End Date";
 
     var title = "";
     if (position.JobTitle) {

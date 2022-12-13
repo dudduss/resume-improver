@@ -4,11 +4,7 @@ import {
   Input,
   InputGroup,
   Stack,
-  Heading,
   Box,
-  Text,
-  HStack,
-  IconButton,
   useMultiStyleConfig,
 } from "@chakra-ui/react";
 
